@@ -10,7 +10,6 @@ pipeline {
     }
 
     environment {
-        //TODO: Customize these variables for your environment
         DEV_PROJECT = "qarh447-movies-dev"
         STAGE_PROJECT = "qarh447-movies-stage"
         APP_GIT_URL = "https://github.com/qarh447/DO288-apps"
@@ -81,8 +80,8 @@ pipeline {
                       }
                     }
                 }
-                oc new-app --as-deployment-config ${APP_NAME}:latest -n ${DEV_PROJECT}
-                oc expose svc/${APP_NAME} -n ${DEV_PROJECT}
+                sh 'oc new-app --as-deployment-config ${APP_NAME}:latest -n ${DEV_PROJECT}'
+                sh 'oc expose svc/${APP_NAME} -n ${DEV_PROJECT}'
             }
         }
 
@@ -124,9 +123,9 @@ pipeline {
 
                 echo '### Creating a new app in Staging ###'
                 sh '''
-                     oc project ${STAGE_PROJECT}
-                     oc new-app --as-deployment-config --name ${APP_NAME} -i ${APP_NAME}:stage
-                     oc expose svc/${APP_NAME}
+                        oc project ${STAGE_PROJECT}
+                        oc new-app --as-deployment-config --name ${APP_NAME} -i ${APP_NAME}:stage
+                        oc expose svc/${APP_NAME}
                    '''
             }
         }
